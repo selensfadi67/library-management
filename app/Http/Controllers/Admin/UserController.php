@@ -9,26 +9,17 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(string $lang)
     {
         $users = User::with('purchases.book')->where('is_admin', false)->paginate(request('per_page', 10));
         return view('admin.users.index', compact('users', 'lang'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create(string $lang)
     {
         return view('admin.users.create', compact('lang'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request, string $lang)
     {
         $request->validate([
@@ -51,26 +42,17 @@ class UserController extends Controller
             ->with('success', __('messages.user_created'));
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $lang, User $user)
     {
         $user->load('purchases.book');
         return view('admin.users.show', compact('user', 'lang'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $lang, User $user)
     {
         return view('admin.users.edit', compact('user', 'lang'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $lang, User $user)
     {
         $request->validate([
@@ -92,9 +74,6 @@ class UserController extends Controller
             ->with('success', __('messages.user_updated'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $lang, User $user)
     {
         if ($user->is_admin) {

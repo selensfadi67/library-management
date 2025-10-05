@@ -14,9 +14,6 @@ class Category extends Model
         'name',
     ];
 
-    /**
-     * Get the books for the category.
-     */
     public function books(): HasMany
     {
         return $this->hasMany(Book::class);

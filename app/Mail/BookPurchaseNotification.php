@@ -19,9 +19,6 @@ class BookPurchaseNotification extends Mailable
     public $purchase;
     public $user;
 
-    /**
-     * Create a new message instance.
-     */
     public function __construct(Book $book, Purchase $purchase)
     {
         $this->book = $book;
@@ -29,9 +26,7 @@ class BookPurchaseNotification extends Mailable
         $this->user = $purchase->user;
     }
 
-    /**
-     * Get the message envelope.
-     */
+  
     public function envelope(): Envelope
     {
         return new Envelope(
@@ -39,9 +34,6 @@ class BookPurchaseNotification extends Mailable
         );
     }
 
-    /**
-     * Get the message content definition.
-     */
     public function content(): Content
     {
         return new Content(
@@ -54,11 +46,7 @@ class BookPurchaseNotification extends Mailable
         );
     }
 
-    /**
-     * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
-     */
+   
     public function attachments(): array
     {
         return [];

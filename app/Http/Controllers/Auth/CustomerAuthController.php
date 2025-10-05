@@ -11,9 +11,7 @@ use Illuminate\Validation\ValidationException;
 
 class CustomerAuthController extends Controller
 {
-    /**
-     * Show the customer login form.
-     */
+    
     public function showLoginForm(string $lang)
     {
         if (Auth::check() && !Auth::user()->isAdmin()) {
@@ -22,9 +20,6 @@ class CustomerAuthController extends Controller
         return view('auth.customer.login', compact('lang'));
     }
 
-    /**
-     * Handle customer login.
-     */
     public function login(Request $request, string $lang)
     {
         $request->validate([
@@ -53,9 +48,7 @@ class CustomerAuthController extends Controller
         ]);
     }
 
-    /**
-     * Show the customer registration form.
-     */
+  
     public function showRegisterForm(string $lang)
     {
         if (Auth::check() && !Auth::user()->isAdmin()) {
@@ -64,9 +57,6 @@ class CustomerAuthController extends Controller
         return view('auth.customer.register', compact('lang'));
     }
 
-    /**
-     * Handle customer registration.
-     */
     public function register(Request $request, string $lang)
     {
         $request->validate([
@@ -89,9 +79,6 @@ class CustomerAuthController extends Controller
             ->with('success', __('messages.registration_successful'));
     }
 
-    /**
-     * Handle customer logout.
-     */
     public function logout(Request $request, string $lang)
     {
         Auth::logout();

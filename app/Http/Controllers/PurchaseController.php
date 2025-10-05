@@ -11,9 +11,7 @@ use App\Mail\BookPurchaseNotification;
 
 class PurchaseController extends Controller
 {
-    /**
-     * Store a newly created purchase.
-     */
+    
     public function store(Request $request, string $lang, Book $book)
     {
         if (!Auth::check()) {
@@ -23,7 +21,7 @@ class PurchaseController extends Controller
 
         $user = Auth::user();
 
-        // Check if user already purchased this book
+       
         $existingPurchase = Purchase::where('user_id', $user->id)
             ->where('book_id', $book->id)
             ->first();
@@ -33,13 +31,13 @@ class PurchaseController extends Controller
                 ->with('error', __('messages.already_purchased'));
         }
 
-        // Check if user has enough balance
+        
         if ($user->balance < $book->price) {
             return redirect()->route('books.show', [$lang, $book])
                 ->with('error', __('messages.insufficient_balance'));
         }
 
-        // Deduct balance and create purchase
+      
         $user->decrement('balance', $book->price);
         
         $purchase = Purchase::create([
@@ -47,11 +45,11 @@ class PurchaseController extends Controller
             'book_id' => $book->id,
         ]);
 
-        // Send email notification
+      
         try {
             Mail::to($user->email)->send(new BookPurchaseNotification($book, $purchase));
         } catch (\Exception $e) {
-            // Log the error but don't fail the purchase
+         
             \Log::error('Failed to send purchase email: ' . $e->getMessage());
         }
 

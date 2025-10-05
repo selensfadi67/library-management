@@ -17,7 +17,7 @@ Route::redirect('/', '/en');
 
 Route::prefix('{lang}')->group(function () {
 
-    // 🏠 Public Routes
+ 
             Route::get('/', function () {
                 $latestBooks = \App\Models\Book::with('category')->latest()->limit(4)->get();
                 $topPurchasedBooks = \App\Models\Book::with('category')
@@ -32,11 +32,9 @@ Route::prefix('{lang}')->group(function () {
         return view('contact');
     })->name('contact');
 
-    // 📚 Public Book Routes
     Route::get('/books', [BookController::class, 'index'])->name('books.index');
     Route::get('/books/{book}', [BookController::class, 'show'])->name('books.show');
 
-            // 🔐 Customer Authentication Routes
             Route::prefix('customer')->group(function () {
                 Route::get('/login', [CustomerAuthController::class, 'showLoginForm'])->name('customer.login');
                 Route::post('/login', [CustomerAuthController::class, 'login'])->name('customer.login.post');
@@ -45,18 +43,18 @@ Route::prefix('{lang}')->group(function () {
                 Route::post('/logout', [CustomerAuthController::class, 'logout'])->name('customer.logout');
             });
 
-            // 🛒 Purchase Routes (require customer authentication)
+           
             Route::middleware('auth.custom')->group(function () {
                 Route::post('/books/{book}/purchase', [PurchaseController::class, 'store'])->name('purchase.store');
             });
 
-    // 🧑‍💼 Admin Authentication Routes
+ 
     Route::prefix('admin')->group(function () {
-        // Login routes (accessible without authentication)
+        
         Route::get('/login', [AuthController::class, 'showLoginForm'])->name('admin.login');
         Route::post('/login', [AuthController::class, 'login'])->name('admin.login.post');
 
-        // Protected admin routes
+       
         Route::middleware(['auth.custom', 'admin'])->group(function () {
             Route::get('/', function () {
                 $stats = [
@@ -68,7 +66,7 @@ Route::prefix('{lang}')->group(function () {
                 return view('admin.dashboard', compact('stats'));
             })->name('admin.dashboard');
 
-            // Admin User Management
+            
             Route::get('/users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users.index');
             Route::get('/users/create', [\App\Http\Controllers\Admin\UserController::class, 'create'])->name('admin.users.create');
             Route::post('/users', [\App\Http\Controllers\Admin\UserController::class, 'store'])->name('admin.users.store');
@@ -82,7 +80,7 @@ Route::prefix('{lang}')->group(function () {
                 return view('admin.purchases', compact('purchases'));
             })->name('admin.purchases');
 
-            // Admin Book Management
+          
             Route::get('/books', [AdminBookController::class, 'index'])->name('admin.books.index');
             Route::get('/books/create', [AdminBookController::class, 'create'])->name('admin.books.create');
             Route::post('/books', [AdminBookController::class, 'store'])->name('admin.books.store');
@@ -91,7 +89,7 @@ Route::prefix('{lang}')->group(function () {
             Route::put('/books/{book}', [AdminBookController::class, 'update'])->name('admin.books.update');
             Route::delete('/books/{book}', [AdminBookController::class, 'destroy'])->name('admin.books.destroy');
 
-            // Admin Category Management
+          
             Route::get('/categories', [AdminCategoryController::class, 'index'])->name('admin.categories.index');
             Route::get('/categories/create', [AdminCategoryController::class, 'create'])->name('admin.categories.create');
             Route::post('/categories', [AdminCategoryController::class, 'store'])->name('admin.categories.store');

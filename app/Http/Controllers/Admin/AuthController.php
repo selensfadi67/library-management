@@ -9,9 +9,7 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    /**
-     * Show admin login form
-     */
+   
     public function showLoginForm(string $lang)
     {
         if (Auth::check() && Auth::user()->isAdmin()) {
@@ -21,9 +19,6 @@ class AuthController extends Controller
         return view('admin.auth.login', compact('lang'));
     }
 
-    /**
-     * Handle admin login
-     */
     public function login(Request $request, string $lang)
     {
         $request->validate([
@@ -53,9 +48,6 @@ class AuthController extends Controller
         ]);
     }
 
-    /**
-     * Handle admin logout
-     */
     public function logout(Request $request, string $lang)
     {
         Auth::logout();

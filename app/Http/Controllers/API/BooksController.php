@@ -11,15 +11,11 @@ use Illuminate\Support\Facades\Validator;
 
 class BooksController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         try {
             $query = Book::with('category');
             
-            // Search functionality
             if ($request->has('search') && $request->search) {
                 $searchTerm = $request->search;
                 $query->where(function($q) use ($searchTerm) {
@@ -32,12 +28,11 @@ class BooksController extends Controller
                 });
             }
             
-            // Category filter
+          
             if ($request->has('category_id') && $request->category_id) {
                 $query->where('category_id', $request->category_id);
             }
-            
-            // Price range filter
+        
             if ($request->has('min_price') && $request->min_price) {
                 $query->where('price', '>=', $request->min_price);
             }
@@ -45,8 +40,7 @@ class BooksController extends Controller
             if ($request->has('max_price') && $request->max_price) {
                 $query->where('price', '<=', $request->max_price);
             }
-            
-            // Sort functionality
+         
             $sortBy = $request->get('sort', 'latest');
             switch ($sortBy) {
                 case 'price_low':
@@ -85,9 +79,7 @@ class BooksController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+   
     public function store(Request $request)
     {
         try {
@@ -133,9 +125,6 @@ class BooksController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         try {
@@ -163,9 +152,6 @@ class BooksController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, string $id)
     {
         try {
@@ -199,7 +185,7 @@ class BooksController extends Controller
             $data = $request->only(['title', 'author', 'price', 'category_id', 'description', 'release_date']);
 
             if ($request->hasFile('image')) {
-                // Delete old image
+              
                 if ($book->image) {
                     Storage::disk('public')->delete($book->image);
                 }
@@ -224,9 +210,7 @@ class BooksController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+   
     public function destroy(string $id)
     {
         try {
@@ -239,7 +223,6 @@ class BooksController extends Controller
                 ], 404);
             }
 
-            // Delete image if exists
             if ($book->image) {
                 Storage::disk('public')->delete($book->image);
             }
@@ -260,9 +243,6 @@ class BooksController extends Controller
         }
     }
 
-    /**
-     * Get latest books
-     */
     public function latest(Request $request)
     {
         try {
@@ -287,9 +267,6 @@ class BooksController extends Controller
         }
     }
 
-    /**
-     * Get most purchased books
-     */
     public function topPurchased(Request $request)
     {
         try {
@@ -315,9 +292,6 @@ class BooksController extends Controller
         }
     }
 
-    /**
-     * Get books by category
-     */
     public function byCategory(Request $request, $categoryId)
     {
         try {

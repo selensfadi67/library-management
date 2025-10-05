@@ -29,17 +29,12 @@ class Book extends Model
         ];
     }
 
-    /**
-     * Get the category that owns the book.
-     */
+    
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
 
-    /**
-     * Get the purchases for the book.
-     */
     public function purchases(): HasMany
     {
         return $this->hasMany(Purchase::class);

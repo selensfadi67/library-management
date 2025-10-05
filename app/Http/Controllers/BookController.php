@@ -8,14 +8,11 @@ use Illuminate\Http\Request;
 
 class BookController extends Controller
 {
-    /**
-     * Display a listing of books.
-     */
+    
     public function index(string $lang)
     {
         $query = Book::with('category');
-        
-        // Search functionality
+      
         if (request()->has('search') && request()->search) {
             $searchTerm = request()->search;
             $query->where(function($q) use ($searchTerm) {
@@ -28,12 +25,10 @@ class BookController extends Controller
             });
         }
         
-        // Category filter
         if (request()->has('category') && request()->category) {
             $query->where('category_id', request()->category);
         }
-        
-        // Price range filter
+      
         if (request()->has('min_price') && request()->min_price) {
             $query->where('price', '>=', request()->min_price);
         }
@@ -41,8 +36,7 @@ class BookController extends Controller
         if (request()->has('max_price') && request()->max_price) {
             $query->where('price', '<=', request()->max_price);
         }
-        
-        // Sort functionality
+     
         $sortBy = request()->get('sort', 'latest');
         switch ($sortBy) {
             case 'price_low':
@@ -69,9 +63,7 @@ class BookController extends Controller
         return view('books.index', compact('books', 'categories', 'lang'));
     }
 
-    /**
-     * Display the specified book.
-     */
+   
     public function show(string $lang, Book $book)
     {
         $book->load('category');

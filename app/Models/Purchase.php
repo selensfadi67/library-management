@@ -15,17 +15,11 @@ class Purchase extends Model
         'book_id',
     ];
 
-    /**
-     * Get the user that owns the purchase.
-     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * Get the book that was purchased.
-     */
     public function book(): BelongsTo
     {
         return $this->belongsTo(Book::class);
